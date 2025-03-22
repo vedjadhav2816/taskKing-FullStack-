@@ -1,0 +1,105 @@
+
+{% extends 'base.html' %}
+{% load static %}  
+{% block title %}About TaskKing{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'about.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero about-hero">
+        <div class="floating-book"></div>
+        <div class="floating-book"></div>
+        <div class="floating-book"></div>
+        <div class="hero-text">
+            <h1>About TaskKing</h1>
+            <p>Your Ultimate Productivity Companion</p>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission">
+        <h2>Our Mission</h2>
+        <div class="mission-content">
+            <p>At TaskKing, we’re dedicated to helping you conquer your day with a smart, stylish, and intuitive to-do list app. Our goal is to make productivity effortless and enjoyable.</p>
+        </div>
+    </section>
+
+    <!-- Features Highlight Section -->
+    <section class="features">
+        <h2>What Makes TaskKing Special</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Smart Organization</h3>
+                <p>Prioritize and categorize tasks with ease.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Real-Time Sync</h3>
+                <p>Access your tasks anywhere, anytime.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Stunning Design</h3>
+                <p>A beautiful interface that inspires action.</p>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team">
+        <h2>What Our Users Say</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <h3>Vidhi Jadhav</h3>
+                <p class="role">"ToDo_Project has completely changed how I manage my daily tasks. A must-have!</p>
+            </div>
+            <div class="team-card">
+                <h3>John Smith</h3>
+                <p class="role">"Super clean UI and really helps me stay productive. Highly recommend!"</p>
+            </div>
+            <div class="team-card">
+                <h3>Emily Chen</h3>
+                <p class="role">"Best task manager I've used—simple, fast, and reliable!"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta">
+        <h2>Join the TaskKing Revolution</h2>
+        <p>Start organizing your life with TaskKing today!</p>
+        <button class="cta-button" onclick="window.location.href='/login'">Get Started</button>
+
+    </section>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>TaskKing</h3>
+                <p>Organize your life, boost your productivity.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'create_payment' %}">Upgrade to Premium</a></li>
+                    <li><a href="{% url 'support' %}">Support</a></li>
+                    <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p>Email: <a href="mailto:support@taskking.com">taskKing81@gmail.com</a></p>
+                <p>Follow us: 
+                    <a href="https://twitter.com/taskKing81" class="social-link" target="_blank" rel="noopener noreferrer">X</a>
+    
+                    <a href="#" class="social-link">Instagram</a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {% now "Y" %} TaskKing. All rights reserved.</p>
+        </div>
+    </footer>
+{% endblock %}

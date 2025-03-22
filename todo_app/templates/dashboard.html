@@ -1,0 +1,519 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - TaskKing{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'dashboard.css' %}?v=1">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<script src="{% static 'voice.js' %}"></script>
+<style>
+    .premium-list li {
+    padding: 15px;
+    color: #c51010; /* Original default color */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+/* Enhanced Responsive Design */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        padding: 20px;
+    }
+
+    .dashboard-content {
+        max-width: 100%;
+    }
+
+    .task-filters {
+        flex-wrap: wrap;
+    }
+
+    .task-filters select, 
+    .task-filters input {
+        flex: 1 1 45%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .dashboard-header {
+        padding: 30px 15px;
+    }
+
+    .stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .stat-card {
+        min-width: 100%;
+        padding: 20px;
+    }
+
+    .task-section {
+        padding: 20px;
+    }
+
+    .task-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .task-filters select, 
+    .task-filters input {
+        flex: 1 1 100%;
+    }
+
+    .task-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .complete-btn, .delete-btn {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .add-task-section {
+        padding: 20px;
+        min-width: 100%;
+    }
+
+    .add-task-section form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .add-task-section input,
+    .add-task-section select {
+        min-width: 100%;
+    }
+
+    .add-task-section button {
+        width: 100%;
+    }
+
+    .premium-section {
+        padding: 20px;
+    }
+
+    .toggle-btn, .upgrade-btn, .payment-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-header {
+        padding: 10px 0px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .task-section {
+        padding: 15px;
+    }
+
+    .task-item {
+        padding: 10px;
+    }
+
+    .add-task-section {
+        padding: 15px;
+    }
+
+    .add-task-section input,
+    .add-task-section select {
+        padding: 10px;
+    }
+
+    .add-task-section button {
+        padding: 10px 20px;
+    }
+
+    .premium-section {
+        padding: 15px;
+    }
+
+    .premium-list li {
+        padding: 10px;
+    }
+
+    .toggle-btn, .upgrade-btn, .payment-btn {
+        padding: 10px 20px;
+    }
+
+    .notification {
+        width: 90%;
+        padding: 8px 15px;
+    }
+}
+
+/* Footer Responsive Adjustments */
+@media (max-width: 768px) {
+    .footer {
+        padding: 30px 15px 15px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-brand,
+    .footer-links,
+    .footer-contact {
+        margin-bottom: 20px;
+    }
+
+    .footer-links ul li {
+        margin: 8px 0;
+    }
+}
+
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="fun-notification" class="notification"></div>
+<section class="dashboard-container">
+    <div class="gradient-overlay"></div>
+    <div class="dashboard-content">
+        <!-- Header and Overview -->
+        <div class="dashboard-header">
+            <h1>Your TaskKing Dashboard</h1>
+            <p>Manage your tasks and boost productivity today!</p>
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>{{ tasks.count }}</h3>
+                    <p>Total Tasks</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{{ completed }}</h3>
+                    <p>Completed</p>
+                </div>
+                <div class="stat-card">
+                    <h3>{{ pending }}</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+        </div>
+        {% if not is_premium %}
+        <div class="sidebar-ad">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    {% endif %}
+        <!-- Task List -->
+        <div class="task-section">
+            <h2>Your Tasks</h2>
+            <div class="task-filters">
+                <select id="priority-filter">
+                    <option value="all">All Priorities</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <input type="text" id="search-task" placeholder="Search tasks...">
+            </div>
+            <ul class="task-list" id="task-list">
+                {% for task in tasks %}
+                    <li class="task-item" data-priority="{{ task.priority }}">
+                        <span class="task-title">{{ task.title }}</span>
+                        <span class="task-status">
+                            {% if task.completed %}✅ Completed {% else %}❌ Pending {% endif %}
+                        </span>
+                        {% if not task.completed %}
+                            <button class="complete-btn" data-task-id="{{ task.id }}">Mark as Complete</button>
+                        {% endif %}
+                        <a href="{% url 'delete_task' task.id %}" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</a>
+                        <span class="task-priority">Priority: {{ task.priority|default:"Medium" }}</span>
+                        <span class="task-date">Due: {{ task.due_date|date:"F d, Y" }}</span>
+                    </li>
+                {% empty %}
+                    <li class="no-task-msg">No tasks found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+      <!-- Add Task Form -->
+<div class="add-task-section">
+    <h2>Add New Task</h2>
+    <form method="POST" action="{% url 'add_task' %}">
+        {% csrf_token %}
+        
+        <div class="task-input-container">
+            <input type="text" id="task-title" name="title" placeholder="New Task" required>
+            <!-- <button type="button" id="voice-btn">🎤</button> -->
+        </div>
+
+        <select name="priority">
+            <option value="high">High</option>
+            <option value="medium" selected>Medium</option>
+            <option value="low">Low</option>
+        </select>
+        <input type="date" name="due_date" required>
+        <button type="submit">Add Task</button>
+    </form>
+</div>
+
+      <!-- Premium Features -->
+<!-- Premium Features (Only for Premium Users) -->
+{% if is_premium %}
+<div class="premium-section">
+    <h2>Premium Features</h2>
+    <button id="toggle-premium-btn" class="toggle-btn">🔽 Show Premium Features</button>
+    <ul id="premium-features" class="hidden premium-list">
+        <li>✅ Profile Editing</li>
+        <li>✅ AI Suggestions</li>
+        <li>✅ Custom Themes</li>
+        <li>✅ Advanced Analytics</li>
+        <li>✅ Priority Support</li>
+        
+    </ul>
+
+    <!-- Show "Manage Subscription" only for premium users -->
+    {% if show_manage_subscription %}
+    <div class="payment-option">
+        <a href="{% url 'manage_subscription' %}" class="payment-btn">Manage Subscription</a>
+    </div>
+    {% endif %}
+
+    <p class="validity-msg">🕒 Your subscription is valid until <strong>{{ subscription_end }}</strong>.</p>
+</div>
+{% else %}
+<!-- Upgrade Section for Non-Premium Users -->
+<div class="upgrade-section">
+    <h2>Unlock Premium Features</h2>
+    <p>Enjoy advanced features and personalized task management!</p>
+
+    <ul class="grayed-out premium-list">
+        <li>✅ Profile Editing</li>
+        <li>✅ AI Suggestions</li>
+        <li>✅ Custom Themes</li>
+        <li>✅ Advanced Analytics</li>
+        <li>✅ Priority Support</li>
+    </ul>
+
+    <p class="upgrade-message">Upgrade to Premium and unlock powerful features!</p>
+
+    <!-- Show Payment Option Only for Non-Premium Users -->
+    <button id="go-to-payment" class="upgrade-btn">Upgrade to Premium - ₹199/month</button>
+    <div class="payment-option">
+        <a href="{% url 'create_payment' %}" class="payment-btn">Go to Payment</a>
+    </div>
+</div>
+{% endif %}
+
+
+</section>
+<div id="fun-notification" style="display: none; background: #ffcc00; padding: 10px; position: fixed; top: 10px; right: 10px; border-radius: 5px; font-weight: bold;">
+    Notification Text Here
+</div>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h3>TaskKing</h3>
+            <p>Organize your life, boost your productivity.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'create_payment' %}">Upgrade to Premium</a></li>
+                <li><a href="{% url 'support' %}">Support</a></li>
+                <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Contact Us</h4>
+            <p>Email: <a href="mailto:support@taskking.com">taskKing81@gmail.com</a></p>
+            <p>Follow us: 
+                <a href="https://twitter.com/taskKing81" class="social-link" target="_blank" rel="noopener noreferrer">X</a>
+
+                <a href="#" class="social-link">Instagram</a>
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} TaskKing. All rights reserved.</p>
+    </div>
+</footer>
+
+
+<script src="{% static 'voice.js' %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // 🔎 Search Tasks
+        const searchInput = document.getElementById("search-task");
+        if (searchInput) {
+            searchInput.addEventListener("keyup", function () {
+                let input = this.value.toLowerCase();
+                let tasks = document.querySelectorAll(".task-item");
+                let found = false;
+
+                tasks.forEach(task => {
+                    let taskTitle = task.querySelector(".task-title").innerText.toLowerCase();
+                    if (taskTitle.includes(input)) {
+                        task.style.display = "flex";
+                        found = true;
+                    } else {
+                        task.style.display = "none";
+                    }
+                });
+
+                document.querySelector(".no-task-msg").style.display = found ? "none" : "block";
+            });
+        }
+
+        // 🎯 Filter by Priority
+        const priorityFilter = document.getElementById("priority-filter");
+        if (priorityFilter) {
+            priorityFilter.addEventListener("change", function () {
+                let filter = this.value;
+                document.querySelectorAll(".task-item").forEach(task => {
+                    let priority = task.getAttribute("data-priority");
+                    task.style.display = (filter === "all" || priority === filter) ? "flex" : "none";
+                });
+            });
+        }
+
+        // 📊 Update Task Stats
+        function updateTaskStats(completed, pending, total) {
+            const stats = document.querySelectorAll(".stat-card h3");
+            if (stats.length >= 3) {
+                stats[0].innerText = total;
+                stats[1].innerText = completed;
+                stats[2].innerText = pending;
+            }
+        }
+
+        // ✅ AJAX - Mark Task as Complete
+        document.querySelectorAll(".complete-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let taskId = this.getAttribute("data-task-id");
+
+                fetch(`/complete-task/${taskId}/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        let parentTask = button.closest(".task-item");
+                        parentTask.querySelector(".task-status").innerHTML = "✅ Completed";
+                        button.remove();
+                        updateTaskStats(data.completed_count, data.pending_count, data.total_tasks);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        });
+
+        // 💎 Toggle Premium Features
+        const toggleButton = document.getElementById("toggle-premium-btn");
+        const premiumList = document.getElementById("premium-features");
+
+        if (toggleButton && premiumList) {
+            toggleButton.addEventListener("click", function () {
+                premiumList.classList.toggle("hidden");
+                toggleButton.textContent = premiumList.classList.contains("hidden") 
+                    ? "🔽 Show Premium Features" 
+                    : "🔼 Hide Premium Features";
+            });
+        }
+
+        // 💳 Redirect to Payment Page
+        const paymentButton = document.getElementById("go-to-payment");
+        if (paymentButton) {
+            paymentButton.addEventListener("click", function () {
+                window.location.href = "{% url 'create_payment' %}";
+            });
+        }
+
+        // 🎉 Fun Mode Notifications
+        const funNotifications = [
+            "Focus Fact: The Pomodoro Technique uses 25-minute work blocks to boost concentration! ⏳",
+            "Focus Tip: Listening to instrumental music can help you stay in the zone. 🎧",
+            "Did you know? Your brain can only focus intensely for about 90 minutes before needing a break. 🧠",
+            "Time Tip: Prioritize tasks with the Eisenhower Matrix—urgent vs. important! ✅",
+            "Fun Fact: The average person spends 2 hours a day on distractions. Beat the stats! 🚀",
+            "Time Hack: Set a timer for 5 minutes to start any task—it’s easier than you think! ⏱️",
+            "Why don’t programmers prefer dark mode? Because the light attracts bugs! 🐛😂",
+            "What’s a procrastinator’s favorite time? Later! 🕒",
+            "Why did the task go to jail? It couldn’t manage its time! ⏳🚔",
+            "Fun Fact: Octopuses have three hearts and can change color to blend in—talk about multitasking! 🐙",
+            "Did you know? Laughing for 10 minutes can burn up to 40 calories! 😂🔥",
+            "Random Tip: Dance like nobody’s watching—it’s a great way to reset your brain! 🕺💃"
+        ];
+
+        const notification = document.getElementById('fun-notification');
+        let notificationInterval = null;
+
+        function showFunNotification() {
+            if (document.body.classList.contains('fun-mode')) {
+                const randomIndex = Math.floor(Math.random() * funNotifications.length);
+                notification.textContent = funNotifications[randomIndex];
+                notification.style.display = 'block';
+
+                setTimeout(() => notification.classList.add('active'), 50);
+
+                setTimeout(() => {
+                    notification.classList.remove('active');
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 500);
+                }, 5000);
+            }
+        }
+
+        // Start or stop notifications based on theme
+        function manageNotifications() {
+            if (document.body.classList.contains('fun-mode')) {
+                if (!notificationInterval) {
+                    showFunNotification();
+                    notificationInterval = setInterval(showFunNotification, 10000);
+                }
+            } else {
+                clearInterval(notificationInterval);
+                notificationInterval = null;
+                notification.classList.remove('active');
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        // Initial check on page load
+        manageNotifications();
+
+        // Watch for theme changes (Fun Mode toggling)
+        const observer = new MutationObserver(() => {
+            manageNotifications();
+        });
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,344 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}TaskKing.AI{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(160deg, #0d0d2b 0%, #1a1a3d 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            color: #ffffff;
+            padding: 2vw;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(108, 99, 255, 0.15) 0%, transparent 70%);
+            animation: rotateGlow 20s linear infinite;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: clamp(1.5rem, 3vw, 2.5rem);
+            border-radius: 25px;
+            box-shadow: 0 0 60px rgba(108, 99, 255, 0.15),
+                        inset 2px 2px 10px rgba(255, 255, 255, 0.05),
+                        inset -2px -2px 10px rgba(0, 0, 0,.ConcurrentModificationException 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 3s ease-in-out infinite;
+            overflow: hidden;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1rem, 2vw, 1.5rem);
+        }
+        input[type="text"] {
+            padding: clamp(0.8rem, 2vw, 1rem) clamp(1rem, 2.5vw, 1.5rem);
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.2),
+                        inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+            width: 100%;
+        }
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        input[type="text"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(108, 99, 255, 0.4),
+                        inset 3px 3px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+        }
+        button {
+            padding: clamp(0.8rem, 2vw, 1rem);
+            background: linear-gradient(135deg, #6c63ff 0%, #ff6bcb 100%);
+            border: none;
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(108, 99, 255, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s ease, height 0.5s ease;
+        }
+        button:hover::before {
+            width: 300%;
+            height: 300%;
+        }
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(108, 99, 255, 0.7);
+        }
+        .result {
+            margin-top: clamp(1.5rem, 2.5vw, 2rem);
+            padding: clamp(1rem, 2vw, 1.5rem);
+            background: rgba(108, 99, 255, 0.08);
+            border-radius: 15px;
+            border-left: 6px solid #6c63ff;
+            animation: slideIn 0.5s ease-out;
+            max-height: 50vh;
+            overflow-y: auto;
+            word-wrap: break-word;
+        }
+        .result h3 {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            margin-bottom: clamp(0.8rem, 1.5vw, 1rem);
+            color: #e0e0ff;
+        }
+        .result ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .result li {
+            padding: clamp(0.6rem, 1.5vw, 0.8rem);
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            word-wrap: break-word;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+        }
+        .result li:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        /* Spark Animation Container */
+        .spark-container {
+            position: relative;
+            width: 100%;
+            height: 50px; /* Fixed height for the spark area */
+            margin-top: clamp(0.5rem, 1vw, 1rem); /* Gap after result */
+            overflow: hidden;
+            z-index: 2;
+        }
+        .spark-container .spark {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ff6bcb; /* Pinkish spark color */
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(108, 99, 255, 0.8), 0 0 20px rgba(255, 107, 203, 0.6);
+            animation: spark 2s infinite ease-in-out;
+            opacity: 0;
+        }
+        .spark-container .spark:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .spark-container .spark:nth-child(2) {
+            left: 30%;
+            animation-delay: 0.3s;
+        }
+        .spark-container .spark:nth-child(3) {
+            left: 50%;
+            animation-delay: 0.6s;
+        }
+        .spark-container .spark:nth-child(4) {
+            left: 70%;
+            animation-delay: 0.9s;
+        }
+        .spark-container .spark:nth-child(5) {
+            left: 90%;
+            animation-delay: 1.2s;
+        }
+        .error {
+            margin-top: clamp(1.5rem, 2.5vw, 2rem);
+            padding: clamp(1rem, 2vw, 1.5rem);
+            background: rgba(255, 75, 75, 0.08);
+            border-radius: 15px;
+            border-left: 6px solid #ff4d4d;
+            color: #ffcccc;
+            animation: slideIn 0.5s ease-out;
+            max-height: 50vh;
+            overflow-y: auto;
+            word-wrap: break-word;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+        }
+        /* Scrollbar Styling */
+        .result::-webkit-scrollbar,
+        .error::-webkit-scrollbar {
+            width: 8px;
+        }
+        .result::-webkit-scrollbar-track,
+        .error::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .result::-webkit-scrollbar-thumb,
+        .error::-webkit-scrollbar-thumb {
+            background: rgba(108, 99, 255, 0.5);
+            border-radius: 10px;
+        }
+        .result::-webkit-scrollbar-thumb:hover,
+        .error::-webkit-scrollbar-thumb:hover {
+            background: rgba(108, 99, 255, 0.8);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spark {
+            0% {
+                transform: translateY(50px) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                transform: translateY(20px) scale(1);
+                opacity: 1;
+            }
+            80% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px) scale(0.5);
+                opacity: 0;
+            }
+        }
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: clamp(1rem, 2.5vw, 2rem);
+            }
+            .result, .error {
+                max-height: 60vh;
+            }
+            .spark-container {
+                height: 40px; /* Slightly smaller on tablets */
+            }
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                width: 100%;
+                padding: 1rem;
+                border-radius: 15px;
+            }
+            input[type="text"], button {
+                padding: 0.8rem;
+                font-size: clamp(0.9rem, 3vw, 1rem);
+            }
+            .result, .error {
+                padding: 1rem;
+                max-height: 55vh;
+            }
+            .result li {
+                padding: 0.6rem;
+            }
+            .spark-container {
+                height: 30px; /* Compact for mobile */
+            }
+            .spark-container .spark {
+                width: 4px;
+                height: 4px;
+            }
+        }
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 800px;
+            }
+            .result, .error {
+                max-height: 45vh;
+            }
+            .spark-container {
+                height: 60px; /* Larger on big screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="goal" placeholder="Enter your goal" required>
+            <button type="submit">Get Suggestion</button>
+        </form>
+
+        {% if task_list %}
+            <div class="result">
+                <h3>Suggested Tasks:</h3>
+                <ul>
+                    {% for task in task_list %}
+                        {% if task.strip %}
+                            <li>{{ task }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="spark-container">
+                <div class="spark"></div>
+                <div class="spark"></div>
+                <div class="spark"></div>
+                <div class="spark"></div>
+                <div class="spark"></div>
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="error">
+                <p><strong>Error:</strong> {{ error }}</p>
+            </div>
+        {% endif %}
+    </div>
+    
+</body>
+</html>
+{% endblock %}

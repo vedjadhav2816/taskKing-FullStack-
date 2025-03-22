@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Profile - TaskKing{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'edit_profile.css' %}?v=1">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<section class="profile-container">
+    <div class="gradient-overlay"></div>
+    <div class="profile-content">
+        <h1>Update Your Profile</h1>
+        <p>Customize your TaskKing experience.</p>
+
+        <form method="POST" action="{% url 'update_profile' %}" class="profile-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">New Password:</label>
+                <input type="password" id="password" name="password" placeholder="Leave blank to keep current password">
+            </div>
+
+            <button type="submit" class="save-btn" onclick="setTimeout(() => window.location.reload(), 1000);">Save Changes</button>
+        </form>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message {% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

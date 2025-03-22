@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Advanced Analytics - TaskKing{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'advanced_analysis.css' %}?v=1">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="analytics-container">
+    <h1>📊 Advanced Analytics</h1>
+    <p>Gain deeper insights into your productivity and task management.</p>
+
+    <div class="analytics-grid">
+        <!-- Task Completion Rate -->
+        <div class="chart-card">
+            <h3>Task Completion Rate</h3>
+            <canvas id="completionChart"></canvas>
+        </div>
+
+        <!-- Priority Breakdown -->
+        <div class="chart-card">
+            <h3>Task Prioritization</h3>
+            <canvas id="priorityChart"></canvas>
+        </div>
+
+        <!-- Overdue Tasks -->
+        <div class="chart-card">
+            <h3>Overdue Tasks</h3>
+            <p><strong>{{ analytics_data.overdue_tasks }}</strong> overdue tasks</p>
+        </div>
+
+        <!-- Pending vs Completed -->
+        <div class="chart-card">
+            <h3>Pending vs. Completed</h3>
+            <canvas id="pendingChart"></canvas>
+        </div>
+    </div>
+
+    <a href="{% url 'dashboard' %}" class="back-btn">← Back to Dashboard</a>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Completion Chart
+        new Chart(document.getElementById("completionChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Completed", "Pending"],
+                datasets: [{
+                    data: [{{ analytics_data.completed_tasks }}, {{ analytics_data.pending_tasks }}],
+                    backgroundColor: ["#4CAF50", "#FF9800"]
+                }]
+            }
+        });
+
+        // Priority Chart
+        new Chart(document.getElementById("priorityChart"), {
+            type: "pie",
+            data: {
+                labels: ["High", "Medium", "Low"],
+                datasets: [{
+                    data: [{{ analytics_data.high_priority }}, {{ analytics_data.medium_priority }}, {{ analytics_data.low_priority }}],
+                    backgroundColor: ["#FF5733", "#FFC300", "#3498DB"]
+                }]
+            }
+        });
+
+        // Pending vs Completed Chart
+        new Chart(document.getElementById("pendingChart"), {
+            type: "bar",
+            data: {
+                labels: ["Pending", "Completed"],
+                datasets: [{
+                    label: "Tasks",
+                    data: [{{ analytics_data.pending_tasks }}, {{ analytics_data.completed_tasks }}],
+                    backgroundColor: ["#FF9800", "#4CAF50"]
+                }]
+            }
+        });
+    });
+</script>
+{% endblock %}

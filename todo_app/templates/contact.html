@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}  <!-- Added to ensure static files work -->
+{% block title %}Contact TaskKing{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'contact.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero contact-hero">
+        <div class="floating-book"></div>
+        <div class="floating-book"></div>
+        <div class="floating-book"></div>
+        <div class="hero-text">
+            <h1>Contact TaskKing</h1>
+            <p>We’re Here to Help You Stay Productive</p>
+        </div>
+    </section>
+
+    <!-- Contact Info Section -->
+    <section class="contact-info">
+        <h2>Get in Touch</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>Email Us</h3>
+                <p class="contact-detail">taskKing81@gmail.com</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>Visit Us</h3>
+                <p class="contact-detail">India,Mumbai</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-form">
+        <h2>Send Us a Message</h2>
+        <form class="form-wrapper">
+            <input type="text" placeholder="Your Name" class="form-field" required>
+            <input type="email" placeholder="Your Email" class="form-field" required>
+            <textarea placeholder="Your Message" class="form-field message" rows="5" required></textarea>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>Do It have AI support?</h3>
+                <p>Yes,TaskKing.AI can support.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is TaskKing free?</h3>
+                <p>Yes, with premium features available!</p>
+            </div>
+            <div class="faq-item">
+                <h3>How do I sync my tasks?</h3>
+                <p>Sign in on any device to sync automatically.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta">
+        <h2>Need More Help?</h2>
+        <p>Reach out anytime—we’re here for you!</p>
+        <a href="{% url 'home' %}"><button class="cta-button">Back to Home</button></a>
+    </section>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>TaskKing</h3>
+                <p>Organize your life, boost your productivity.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'create_payment' %}">Upgrade to Premium</a></li>
+                    <li><a href="{% url 'support' %}">Support</a></li>
+                    <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact Us</h4>
+                <p>Email: <a href="mailto:support@taskking.com">taskKing81@gmail.com</a></p>
+                <p>Follow us: 
+                    <a href="https://twitter.com/taskKing81" class="social-link" target="_blank" rel="noopener noreferrer">X</a>
+    
+                    <a href="#" class="social-link">Instagram</a>
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {% now "Y" %} TaskKing. All rights reserved.</p>
+        </div>
+    </footer>
+{% endblock %}

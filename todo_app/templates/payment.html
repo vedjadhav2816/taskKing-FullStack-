@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+{% block title %}Payment - Upgrade to Premium{% endblock %}
+
+{% block content %}
+<div class="payment-container">
+    <h2>Upgrade to Premium</h2>
+    <p class="subtitle">Unlock exclusive features and supercharge your productivity!</p>
+
+    {% if has_paid %}
+        <div class="already-premium">
+            <h3>🎉 You're a Premium Member!</h3>
+            <p>Enjoy your premium benefits.</p>
+            <a href="{% url 'dashboard' %}" class="dashboard-btn">Go to Dashboard</a>
+        </div>
+    {% else %}
+        <div class="pricing-card">
+            <h3>Premium Plan</h3>
+            <div class="price">
+                <span class="amount">₹199</span>
+                <span class="duration">/per-month</span>
+            </div>
+            
+            <ul class="features">
+                <li>✓ AI Suggestions</li>
+                <li>✓ Unlimited Task Creation</li>
+                <li>✓ Priority Support</li>
+                <li>✓ Advanced Analytics</li>
+                <li>✓ Custom Themes</li>
+            </ul>
+
+            <button id="pay-btn" class="pay-button">Upgrade Now for ₹199</button>
+        </div>
+
+        <!-- Razorpay Script -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+        <!-- CSRF Token -->
+        <form>
+            {% csrf_token %}
+        </form>
+    {% endif %}
+</div>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h3>TaskKing</h3>
+            <p>Organize your life, boost your productivity.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'create_payment' %}">Upgrade to Premium</a></li>
+                <li><a href="{% url 'support' %}">Support</a></li>
+                <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Contact Us</h4>
+            <p>Email: <a href="mailto:support@taskking.com">taskKing81@gmail.com</a></p>
+            <p>Follow us: 
+                <a href="https://twitter.com/taskKing81" class="social-link" target="_blank" rel="noopener noreferrer">X</a>
+
+                <a href="#" class="social-link">Instagram</a>
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} TaskKing. All rights reserved.</p>
+    </div>
+</footer>
+
+<style>
+    .payment-container {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    h2 { color: #333; margin-bottom: 10px; }
+    .subtitle { color: #666; font-size: 1.1em; margin-bottom: 30px; }
+
+    /* Premium user message */
+    .already-premium {
+        background: #f4f8ff;
+        border: 2px solid #3399cc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+    }
+    .already-premium h3 {
+        color: #3399cc;
+    }
+    .dashboard-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background: #3399cc;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .dashboard-btn:hover {
+        background: #287ba5;
+    }
+
+    /* Pricing Card */
+    .pricing-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin: 0 auto;
+    }
+    .pricing-card h3 { color: #3399cc; margin-bottom: 20px; }
+
+    /* Payment Button */
+    .pay-button {
+        background: #3399cc;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+    .pay-button:hover { background: #287ba5; }
+</style>
+
+{% if not has_paid %}
+<script>
+    document.getElementById("pay-btn")?.addEventListener("click", function () {
+        var options = {
+            "key": "{{ key }}",
+            "amount": 19900,
+            "currency": "INR",
+            "order_id": "{{ order_id }}",
+            "name": "TaskKing Premium",
+            "description": "Upgrade to Premium Membership",
+            "image": "https://yourwebsite.com/logo.png",
+            "handler": function (response) {
+                fetch("{% url 'payment_success' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+                    },
+                    body: new URLSearchParams({
+                        "razorpay_payment_id": response.razorpay_payment_id,
+                        "razorpay_order_id": response.razorpay_order_id,
+                        "razorpay_signature": response.razorpay_signature
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert("Payment Successful!");
+                        window.location.href = "/dashboard/";
+                    } else {
+                        alert("Payment verification failed. Contact support.");
+                    }
+                })
+                .catch(error => alert("Error verifying payment. Try again."));
+            },
+            "prefill": {
+                "name": "{{ request.user.username }}",
+                "email": "{{ request.user.email }}"
+            },
+            "theme": { "color": "#3399cc" }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+    });
+</script>
+{% endif %}
+{% endblock %}

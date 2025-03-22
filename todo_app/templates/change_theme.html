@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}changetheme - TaskKing{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'changetheme.css' %}?v=1">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="change-theme-page">
+    <h2>Change Theme</h2>
+    <form method="POST" action="{% url 'change_theme' %}" id="theme-form">
+        {% csrf_token %}
+        <label>
+            <input type="radio" name="theme" value="light" {% if user.profile.theme == "light" %}checked{% endif %}> Light Theme
+        </label>
+        <label>
+            <input type="radio" name="theme" value="dark" {% if user.profile.theme == "dark" %}checked{% endif %}> Dark Theme
+        </label>
+        <label>
+            <input type="radio" name="theme" value="fun" {% if user.profile.theme == "fun" %}checked{% endif %}> Fun Mode
+        </label>
+        <button type="submit">Save</button>
+    </form>
+    <button id="theme-toggle" class="toggle-btn">Toggle Theme</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const themeRadios = document.querySelectorAll('input[name="theme"]');
+    const body = document.body;
+
+    // Apply theme instantly on selection
+    themeRadios.forEach(radio => {
+        radio.addEventListener("change", function () {
+            let selectedTheme = this.value;
+            updateTheme(selectedTheme);
+        });
+    });
+
+    function updateTheme(theme) {
+        body.classList.remove("light-theme", "dark-theme", "fun-theme");
+        body.classList.add(theme + "-theme");
+        localStorage.setItem("theme", theme);
+    }
+
+    // Toggle button for switching themes
+    document.getElementById("theme-toggle").addEventListener("click", function () {
+        let currentTheme = localStorage.getItem("theme") || "light";
+        let nextTheme = currentTheme === "light" ? "dark" : currentTheme === "dark" ? "fun" : "light";
+        
+        document.querySelector(`input[value="${nextTheme}"]`).checked = true;
+        updateTheme(nextTheme);
+    });
+});
+</script>
+
+{% endblock %}
+

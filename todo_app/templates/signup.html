@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Signup for TaskKing{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'signup.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="signup-container">
+        <div class="gradient-overlay"></div>
+        <div class="signup-content">
+            <h1>Create Your TaskKing Account</h1>
+            <p>Unlock Your Productivity Potential</p>
+            <div class="signup-form">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="first_name" placeholder="First Name" required>
+                    <input type="text" name="last_name" placeholder="Last Name" required>
+                    <input type="email" name="email" placeholder="Email Address" required>
+                    <input type="text" name="username" placeholder="Choose a Username" required>
+                    <input type="password" name="password" placeholder="Create a Password" required>
+                    <button type="submit">Get Started</button>
+                </form>
+                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

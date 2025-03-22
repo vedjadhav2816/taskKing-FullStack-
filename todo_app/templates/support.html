@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Support - TaskKing{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Support Page Styles */
+    .support-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .support-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .support-header h1 {
+        font-size: 32px;
+        color: #2c3e50; /* Matches footer gradient */
+        margin-bottom: 10px;
+    }
+
+    .support-header p {
+        font-size: 16px;
+        color: #7f8c8d; /* Subtle gray */
+    }
+
+    .contact-form {
+        margin-bottom: 40px;
+    }
+
+    .contact-form h2 {
+        font-size: 24px;
+        color: #34495e;
+        margin-bottom: 20px;
+    }
+
+    .contact-form form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Space between form fields */
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #34495e;
+        transition: border-color 0.3s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #2980b9; /* Blue focus */
+        outline: none;
+        box-shadow: 0 0 5px rgba(41, 128, 185, 0.3);
+    }
+
+    .contact-form textarea {
+        min-height: 120px;
+        resize: vertical; /* Allow vertical resizing only */
+    }
+
+    .contact-form button {
+        background: #2980b9;
+        color: #ffffff;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .contact-form button:hover {
+        background: #3498db;
+        transform: translateY(-2px);
+    }
+
+    .faq-section {
+        margin-bottom: 40px;
+    }
+
+    .faq-section h2 {
+        font-size: 24px;
+        color: #34495e;
+        margin-bottom: 20px;
+    }
+
+    .faq-item {
+        margin-bottom: 20px;
+    }
+
+    .faq-item h3 {
+        font-size: 18px;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .faq-item p {
+        font-size: 14px;
+        color: #7f8c8d;
+        line-height: 1.6;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .support-container {
+            margin: 20px;
+            padding: 15px;
+        }
+
+        .support-header h1 {
+            font-size: 28px;
+        }
+
+        .support-header p {
+            font-size: 14px;
+        }
+
+        .contact-form h2,
+        .faq-section h2 {
+            font-size: 20px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 10px;
+        }
+
+        .contact-form button {
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+
+        .faq-item h3 {
+            font-size: 16px;
+        }
+
+        .faq-item p {
+            font-size: 13px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="support-container">
+    <div class="support-header">
+        <h1>TaskKing Support</h1>
+        <p>We’re here to help you with any questions or issues. Reach out or check our FAQs below!</p>
+    </div>
+
+    <div class="contact-form">
+        <h2>Contact Us</h2>
+        <form method="POST" action="{% url 'support' %}">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h3>How do I upgrade to Premium?</h3>
+            <p>Visit the <a href="{% url 'create_payment' %}">Upgrade to Premium</a> page from your dashboard, and follow the payment instructions.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Can I change my theme?</h3>
+            <p>Yes, Premium users can change their theme from the profile sidebar under "Change Theme."</p>
+        </div>
+        <div class="faq-item">
+            <h3>How do I reset my password?</h3>
+            <p>Use the "Forgot Password" link on the login page, or contact us if you need further assistance.</p>
+        </div>
+        <div class="faq-item">
+            <h3>Who can I contact for billing issues?</h3>
+            <p>Email us at <a href="mailto:taskking81@gmail.com.com">taskKing81gmail.com</a> with your billing concerns.</p>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h3>TaskKing</h3>
+            <p>Organize your life, boost your productivity.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'create_payment' %}">Upgrade to Premium</a></li>
+                <li><a href="{% url 'support' %}">Support</a></li>
+                <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Contact Us</h4>
+            <p>Email: <a href="mailto:support@taskking.com">taskKing81@gmail.com</a></p>
+            <p>Follow us: 
+                <a href="https://twitter.com/taskKing81" class="social-link" target="_blank" rel="noopener noreferrer">X</a>
+
+                <a href="#" class="social-link">Instagram</a>
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} TaskKing. All rights reserved.</p>
+    </div>
+</footer>
+{% endblock %}

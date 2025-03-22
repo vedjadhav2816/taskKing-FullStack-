@@ -1,0 +1,463 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}"> <!-- Fixed CSRF token -->
+    <title>{% block title %}To-Do App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'changetheme.css' %}">
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-9860516937084704",
+        enable_page_level_ads: true
+    });
+</script>
+
+    {% block extra_css %}{% endblock %}
+    <style>
+      /* Profile Sidebar Styles */
+.profile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 320px;
+    height: 100%;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: #ecf0f1;
+    padding: 30px 20px;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -8px 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.profile-sidebar.active {
+    right: 0;
+}
+
+.profile-sidebar h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+.profile-sidebar p {
+    margin: 15px 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #bdc3c7;
+}
+
+.profile-sidebar p strong {
+    color: #ecf0f1;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+/* Close Button Styles */
+.profile-sidebar .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #ecf0f1;
+    background: transparent; /* Ensure no background */
+    border: none; /* Remove default border */
+    padding: 5px;
+    line-height: 1; /* Fix vertical alignment */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-sidebar .close-btn:hover {
+    color: #e74c3c; /* Red on hover */
+    transform: rotate(90deg); /* Rotate effect */
+}
+
+.profile-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-actions .btn {
+    display: block;
+    background: #2980b9;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-actions .btn:hover {
+    background: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Profile Icon Styles */
+.profile-icon {
+    cursor: pointer;
+    font-size: 24px;
+    margin-left: 20px;
+    color: #34495e;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-icon:hover {
+    color: #2980b9;
+    transform: scale(1.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .profile-sidebar {
+        width: 280px;
+        right: -280px;
+        padding: 20px 15px;
+    }
+
+    .profile-sidebar h2 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .profile-sidebar p {
+        font-size: 14px;
+        margin: 12px 0;
+    }
+
+    .profile-sidebar .close-btn {
+        font-size: 20px;
+        top: 15px;
+        right: 15px;
+    }
+}
+
+/* Animation */
+.profile-sidebar.active h2,
+.profile-sidebar.active p,
+.profile-sidebar.active .profile-actions {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateX(20px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+.nav-links.active {
+    background: linear-gradient(
+        120deg,
+        rgba(74, 144, 226, 0.4), /* Vibrant blue */
+        rgba(255, 107, 107, 0.4), /* Punchy red from payment-btn */
+        rgba(255, 204, 0, 0.4),   /* Bright yellow from toggle-btn */
+        rgba(147, 112, 219, 0.4), /* Rich purple */
+        rgba(0, 221, 235, 0.4)    /* Electric cyan */
+    );
+    background-size: 300% 300%; /* Larger size for dramatic movement */
+    animation: cosmicFlow 6s ease-in-out infinite; /* Smoother, longer animation */
+    backdrop-filter: blur(12px); /* Stronger glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* dragonsBrighter glass edge */
+    box-shadow: 0 0 20px rgba(0, 221, 235, 0.3); /* Subtle cyan glow */
+}
+
+/* Awesome Animation Keyframes */
+@keyframes cosmicFlow {
+    0% {
+        background-position: 0% 0%;
+    }
+    25% {
+        background-position: 100% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 0% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+/* Enhance Links Inside the Menu */
+.nav-links.active a {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Soft white glow */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-links.active a:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+    color: #ffcc00; /* Bright yellow hover for pop */
+}
+.nav-toggle .hamburger {
+    color: #e0e0e0; /* Default color (inactive) */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.nav-links.active + .nav-toggle .hamburger {
+    color: #00ddeb; /* Active color (cyan) */
+}
+
+/* Logo Styling */
+/* Logo Container */
+.nav-logo {
+    font-family: 'Orbitron', 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    display: flex; /* Ensures proper alignment */
+    align-items: center;
+    gap: 10px; /* Space between text and image */
+    background: transparent;
+}
+
+/* Lion Image */
+.nav-logo-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    box-shadow: 
+        0 0 10px rgba(108, 99, 255, 0.7), 
+        inset 2px 2px 5px rgba(255, 255, 255, 0.4), 
+        inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.2) contrast(1.1);
+    animation: crystalShimmer 3s infinite ease-in-out;
+    background-size: cover;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background: transparent;
+}
+
+
+/* Animation */
+@keyframes crystalShimmer {
+    0% { box-shadow: 0 0 10px rgba(108, 99, 255, 0.7); }
+    50% { box-shadow: 0 0 15px rgba(255, 107, 203, 0.9); }
+    100% { box-shadow: 0 0 10px rgba(108, 99, 255, 0.7); }
+}
+
+    </style>
+</head>
+<body class="{% if user.profile.theme == 'light' %}light-mode{% elif user.profile.theme == 'fun' %}fun-mode{% endif %}" id="main-body">
+<!-- Navbar -->
+<nav>
+    <div class="nav-toggle">
+        <span class="hamburger" style="color: #2980b9;">☰</span>
+    </div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}" class="nav-logo">
+            TaskKing
+            <img src="{% static 'taskKinglogo.webp' %}" alt="TaskKing Logo" class="nav-logo-img">
+        </a>    <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        
+        {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+          
+            
+            {% if user.profile.is_premium %}
+                <a href="{% url 'advanced_analytics' %}">📊 Advanced Analytics</a>
+                <a href="{% url 'suggest_tasks' %}">💡 TaskKing.AI</a>
+            {% endif %}
+            
+            <a href="{% url 'logout' %}">Logout</a>
+            <span class="profile-icon" id="profile-icon">👤</span>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'signup' %}">Signup</a>
+        {% endif %}
+    </div>
+</nav>
+
+
+    <!-- Profile Sidebar (Same for All Pages) -->
+    <div class="profile-sidebar" id="profileSidebar">
+       
+        <h2>Your Profile</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Premium Status:</strong> {% if user.profile.is_premium %} ✅ Premium User {% else %} ❌ Free User {% endif %}</p>
+        {% if user.profile.is_premium %}
+            <div class="profile-actions">
+                <a href="{% url 'edit_profile' %}" class="btn">Edit Profile</a>
+                <a href="{% url 'change_theme' %}" class="btn">Change Theme</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        {% block content %}
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="floating-book"></div>
+                <div class="floating-book"></div>
+                <div class="floating-book"></div>
+                <div class="hero-text">
+                    <h1>Welcome to To-Do Master</h1>
+                    <p>Boost Your Productivity with Style</p>
+                </div>
+            </section>
+
+            <!-- Task Input Section -->
+            <section class="task-input">
+                <h2>Add a Task</h2>
+                <div class="input-wrapper">
+                    <input type="text" placeholder="What’s on your mind?" class="task-field">
+                    <button class="cta-button" onclick="window.location.href='/login'">Get Started</button>
+                </div>
+            </section>
+
+            <!-- Productivity Stats Section -->
+            <section class="productivity-stats">
+                <h2>Your Productivity</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Tasks Completed</h3>
+                        <p class="stat-number">24</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Daily Streak</h3>
+                        <p class="stat-number">7</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Focus Hours</h3>
+                        <p class="stat-number">3.5</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features">
+                <h2>Why Choose Us?</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Smart Tasks</h3>
+                        <p>Intelligent task management</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Sync Magic</h3>
+                        <p>Real-time synchronization</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Visual Delight</h3>
+                        <p>Beautiful interface</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Premium Features Section -->
+            <section class="premium-features">
+                <h2>Unlock Premium Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Advanced Analytics</h3>
+                        <p>Get detailed insights into your productivity.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Priority Support</h3>
+                        <p>24/7 dedicated customer assistance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Ad-Free Experience</h3>
+                        <p>Enjoy a distraction-free workflow.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>AI support</h3>
+                        <p>Support Your Time-Management with taskKing.AI</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Themes</h3>
+                        <p>3 types of themes to make Enjoyment</p>
+                    </div>
+                </div>
+                <button class="cta-button">Upgrade to Premium</button>
+            </section>
+
+            <!-- Motivational Quote Section -->
+            <section class="motivation">
+                <h2>Stay Inspired</h2>
+                <div class="quote-box">
+                    <p class="quote-text">"The secret of getting ahead is getting started."</p>
+                    <p class="quote-author">- Mark Twain</p>
+                </div>
+            </section>
+
+            <!-- Call to Action Section -->
+            <section class="cta">
+                <h2>Ready to Be Productive?</h2>
+                <button class="cta-button" onclick="window.location.href='/login'">Get Started</button>
+            </section>
+        {% endblock %}
+    </div>
+     <!-- Footer -->
+
+
+    {% block extra_js %}{% endblock %}
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Navbar toggle with icon change
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const hamburger = document.querySelector('.hamburger');
+        if (navToggle && navLinks && hamburger) {
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+        }
+
+        // Profile Sidebar toggle
+        const profileIcon = document.getElementById('profile-icon');
+        const profileSidebar = document.getElementById('profileSidebar');
+        const closeProfile = document.getElementById('close-profile');
+        let isToggling = false;
+
+        const toggleSidebar = () => {
+            if (isToggling) return;
+            isToggling = true;
+            profileSidebar.classList.toggle('active');
+            setTimeout(() => {
+                isToggling = false;
+            }, 400); // Matches CSS transition duration
+        };
+
+        if (profileIcon && profileSidebar) {
+            profileIcon.addEventListener('click', toggleSidebar);
+        }
+
+        if (closeProfile && profileSidebar) {
+            closeProfile.addEventListener('click', toggleSidebar);
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (event) => {
+            if (
+                profileSidebar.classList.contains('active') &&
+                !profileSidebar.contains(event.target) &&
+                !profileIcon.contains(event.target)
+            ) {
+                toggleSidebar();
+            }
+        });
+    });
+    </script>
+</body>
+</html>
