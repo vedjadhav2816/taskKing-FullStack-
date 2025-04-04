@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="subscription-container">
+    <h2>Manage Your Subscription</h2>
+    
+    {% if is_premium %}
+        <p>✅ You have already paid for the premium subscription.</p>
+        <p>🕒 Your premium access is valid until <strong>{{ subscription_end }}</strong>.</p>
+        <a href="{% url 'create_payment' %}" class="payment-btn">Renew Subscription</a>
+    {% else %}
+        <p>⚠ You are not a premium member yet.</p>
+        <a href="{% url 'create_payment' %}" class="payment-btn">Upgrade Now</a>
+    {% endif %}
+</div>
+{% endblock %}

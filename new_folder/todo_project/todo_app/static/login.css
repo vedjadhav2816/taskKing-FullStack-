@@ -1,0 +1,264 @@
+/* Login Hero Section */
+.login-hero.hero {
+    height: 100vh; /* Full viewport height, no min-height to avoid overflow */
+    position: relative;
+    background: linear-gradient(135deg, rgba(0, 221, 235, 0.2), rgba(255, 107, 107, 0.2));
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(10px, 2vh, 20px);
+    box-sizing: border-box;
+}
+
+/* Floating Books */
+.floating-book {
+    position: absolute;
+    width: clamp(20px, 5vw, 50px);
+    height: clamp(30px, 6vw, 60px);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    animation: float 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.floating-book:nth-child(1) {
+    top: clamp(2%, 1vh, 10%);
+    left: clamp(5%, 2vw, 15%);
+    animation-delay: 0s;
+}
+
+.floating-book:nth-child(2) {
+    top: clamp(10%, 3vh, 20%);
+    right: clamp(5%, 2vw, 15%);
+    animation-delay: 1s;
+}
+
+.floating-book:nth-child(3) {
+    bottom: clamp(2%, 1vh, 15%);
+    left: clamp(10%, 3vw, 20%);
+    animation-delay: 2s;
+}
+
+/* Hero Text */
+.hero-text {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.8s ease-out;
+    padding: clamp(5px, 1vh, 15px);
+    margin-bottom: clamp(0.5rem, 2vh, 2rem);
+}
+
+.hero-text h1 {
+    font-size: clamp(1rem, 4vw, 2.5rem); /* Lower min size for small screens */
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(0, 221, 235, 0.5);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    margin: 0 0 clamp(0.2rem, 1vh, 0.5rem);
+    line-height: 1.2; /* Prevent text overflow */
+    word-wrap: break-word; /* Break long text */
+}
+
+.hero-text p {
+    font-size: clamp(0.75rem, 2.5vw, 1.2rem);
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* Login Form */
+.login-form {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: clamp(0.8rem, 3vw, 2rem);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: clamp(220px, 85vw, 400px);
+    text-align: center;
+    position: relative;
+    z-index: 3;
+    animation: bounceIn 1s ease-out;
+    border: 1px solid rgba(0, 221, 235, 0.3);
+    margin: clamp(0.5rem, 2vh, 2rem) auto 0;
+}
+
+.login-form form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.6rem, 2vh, 1.2rem);
+}
+
+.login-form input {
+    padding: clamp(0.5rem, 2vw, 1rem);
+    border: 1px solid #00ddeb;
+    border-radius: 8px;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    background: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.login-form input::placeholder {
+    color: #ccc;
+}
+
+.login-form button {
+    background: linear-gradient(45deg, #00ddeb, #ff6b6b);
+    border: none;
+    padding: clamp(0.5rem, 2vw, 1rem);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.login-form button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 221, 235, 0.5);
+}
+
+.login-form p {
+    margin-top: clamp(0.6rem, 2vh, 1.2rem);
+    font-size: clamp(0.7rem, 2vw, 0.9rem);
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-form a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.login-form a:hover {
+    color: #00ddeb;
+    text-shadow: 0 0 5px rgba(0, 221, 235, 0.5);
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    60% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .login-hero.hero {
+        height: 90vh;
+    }
+    .floating-book {
+        width: clamp(20px, 4vw, 40px);
+        height: clamp(30px, 5vw, 50px);
+    }
+}
+
+@media (max-width: 768px) {
+    .login-hero.hero {
+        height: 80vh;
+        padding: clamp(8px, 2vh, 15px);
+    }
+    .floating-book {
+        width: clamp(15px, 3.5vw, 35px);
+        height: clamp(25px, 4.5vw, 45px);
+    }
+}
+
+@media (max-width: 480px) {
+    .login-hero.hero {
+        height: auto; /* Dynamic height */
+        min-height: 100vh; /* Ensure it fills viewport */
+        padding: clamp(5px, 1.5vh, 10px);
+        justify-content: flex-start; /* Start content at top */
+    }
+    .floating-book {
+        width: clamp(15px, 4vw, 30px);
+        height: clamp(20px, 5vw, 40px);
+        top: clamp(1%, 1vh, 2%) !important; /* Keep books near top */
+        bottom: clamp(1%, 1vh, 2%) !important;
+        left: clamp(5%, 2vw, 10%) !important;
+        right: clamp(5%, 2vw, 10%) !important;
+    }
+    .hero-text {
+        padding: clamp(5px, 1vh, 10px);
+        margin-top: clamp(10px, 2vh, 20px); /* Space from top */
+        margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
+    }
+    .hero-text h1 {
+        font-size: clamp(0.9rem, 4vw, 1.6rem);
+    }
+    .hero-text p {
+        font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    }
+    .login-form {
+        max-width: clamp(200px, 90vw, 280px);
+        padding: clamp(0.6rem, 2vw, 1.2rem);
+        margin: clamp(0.5rem, 1.5vh, 1.5rem) auto 0;
+    }
+    .login-form input,
+    .login-form button {
+        padding: clamp(0.4rem, 1.5vw, 0.8rem);
+    }
+}
+
+@media (max-width: 320px) {
+    .login-hero.hero {
+        padding: clamp(5px, 1vh, 8px);
+    }
+    .hero-text h1 {
+        font-size: clamp(0.8rem, 4vw, 1.2rem);
+    }
+    .hero-text p {
+        font-size: clamp(0.65rem, 2.5vw, 0.8rem);
+    }
+    .login-form {
+        max-width: clamp(180px, 95vw, 260px);
+        padding: clamp(0.5rem, 2vw, 1rem);
+    }
+}
+
+@media (max-height: 600px) {
+    .login-hero.hero {
+        height: auto;
+        min-height: 100vh;
+        padding: clamp(5px, 1vh, 10px);
+    }
+    .floating-book {
+        display: none; /* Hide books on short screens */
+    }
+    .hero-text {
+        margin-top: clamp(5px, 1vh, 10px);
+        margin-bottom: clamp(0.3rem, 1vh, 0.8rem);
+    }
+    .login-form {
+        margin-top: clamp(0.3rem, 1vh, 1rem);
+        padding: clamp(0.5rem, 2vw, 1rem);
+    }
+}
