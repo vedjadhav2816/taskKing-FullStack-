@@ -1,0 +1,1062 @@
+/* dashboard.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #2a2a3d);
+    color: #e0e0e0;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.dashboard-container {
+    position: relative;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(74, 144, 226, 0.2), rgba(147, 112, 219, 0.1));
+    opacity: 0.8;
+    z-index: -1;
+    animation: pulse 15s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 0.5; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+.dashboard-content {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* Header and Stats */
+.dashboard-header {
+    text-align: center;
+    padding: 50px 20px;
+    background: rgba(30, 30, 47, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+}
+
+.dashboard-header h1 {
+    font-size: 3em;
+    color: #00ddeb;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 221, 235, 0.5);
+}
+
+.dashboard-header p {
+    font-size: 1.3em;
+    color: #b0b0c0;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.stat-card {
+    background: linear-gradient(45deg, #4a90e2, #9370db);
+    color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    min-width: 150px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+}
+
+.stat-card h3 {
+    font-size: 2.5em;
+    margin-bottom: 8px;
+}
+
+.stat-card p {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+/* Task Section */
+.task-section {
+    background: rgba(42, 42, 61, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+    backdrop-filter: blur(5px);
+}
+
+.task-section h2 {
+    font-size: 2em;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.task-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.task-filters select, 
+.task-filters input {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #3a3a52;
+    color: #e0e0e0;
+    font-size: 1em;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.task-filters select:hover,
+.task-filters input:hover {
+    background: #4a4a6b;
+}
+
+.task-filters select:focus,
+.task-filters input:focus {
+    background: #4a90e2;
+    color: #fff;
+}
+
+.task-list {
+    list-style: none;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.task-item:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.high-priority { border-left: 6px solid #ff4d4d; }
+.medium-priority { border-left: 6px solid #ffcc00; }
+.low-priority { border-left: 6px solid #00cc99; }
+
+.task-title {
+    font-weight: 600;
+    flex: 2;
+    color: #fff;
+}
+
+.task-status {
+    flex: 1;
+    color: #b0b0c0;
+    font-size: 0.9em;
+}
+
+.task-priority, .task-date {
+    flex: 1;
+    color: #a0a0c0;
+    font-size: 0.9em;
+}
+
+.complete-btn, .delete-btn {
+    padding: 8px 15px;
+    margin-left: 15px;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.complete-btn {
+    background: #00cc99;
+    color: #fff;
+}
+
+.complete-btn:hover {
+    background: #00b386;
+    box-shadow: 0 0 15px rgba(0, 204, 153, 0.5);
+}
+
+.delete-btn {
+    background: #ff4d4d;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background: #e60000;
+    box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+}
+
+/* Add Task Section */
+.add-task-section {
+    background: rgba(42, 42, 61, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+}
+
+.add-task-section h2 {
+    font-size: 2em;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.add-task-section form {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.add-task-section input,
+.add-task-section select {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #3a3a52;
+    color: #e0e0e0;
+    font-size: 1em;
+    flex: 1;
+    min-width: 180px;
+    transition: all 0.3s ease;
+}
+
+.add-task-section input:hover,
+.add-task-section select:hover {
+    background: #4a4a6b;
+}
+
+.add-task-section button {
+    padding: 12px 30px;
+    background: linear-gradient(45deg, #4a90e2, #00ddeb);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.add-task-section button:hover {
+    background: linear-gradient(45deg, #357abd, #00b8c4);
+    box-shadow: 0 0 20px rgba(0, 221, 235, 0.5);
+}
+
+/* Premium Section */
+.premium-section {
+    background: linear-gradient(135deg, #9370db, #4a90e2);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.toggle-btn {
+    padding: 12px 25px;
+    background: #ffcc00;
+    color: #1e1e2f;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.toggle-btn:hover {
+    background: #e6b800;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+}
+
+.premium-list {
+    list-style: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.premium-list li {
+    padding: 15px;
+    color: #e0e0e0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.premium-list li:hover {
+    transform: scale(1.03);
+}
+
+.premium-list:not(.hidden) {
+    max-height: 300px; /* Adjust based on content */
+    opacity: 1;
+}
+
+.upgrade-btn {
+    display: inline-block;
+    padding: 15px 35px;
+    background: #ffcc00;
+    color: #1e1e2f;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.upgrade-btn:hover {
+    background: #e6b800;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+}
+
+.premium-section p {
+    color: #e0e0e0;
+    margin-top: 15px;
+}
+
+/* No Tasks Message */
+.no-task-msg {
+    text-align: center;
+    color: #b0b0c0;
+    font-style: italic;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .stats {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .task-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .add-task-section form {
+        flex-direction: column;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2em;
+    }
+}
+/* Add these styles at the end of your existing dashboard.css */
+
+/* Payment Option */
+.payment-option {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.payment-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.payment-btn:hover {
+    background: linear-gradient(45deg, #ff8e53, #ff6b6b);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    transform: translateY(-3px);
+}
+/* Add Task Section (Dark Mode Default) */
+.add-task-section {
+    background: rgba(42, 42, 61, 0.95);
+    padding: 40px; /* Increased padding for more space */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+    min-width: 600px; /* Ensures a decent width */
+    max-width: 100%; /* Prevents overflow */
+    backdrop-filter: blur(5px);
+}
+
+.add-task-section h2 {
+    font-size: 2.5em; /* Larger heading for prominence */
+    color: #fff;
+    margin-bottom: 25px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.add-task-section form {
+    display: flex;
+    gap: 20px; /* Increased gap for better spacing */
+    flex-wrap: wrap;
+    align-items: center; /* Vertically centers form elements */
+}
+
+.add-task-section input,
+.add-task-section select {
+    padding: 15px; /* Larger padding for bigger inputs */
+    border: none;
+    border-radius: 10px;
+    background: #3a3a52;
+    color: #e0e0e0;
+    font-size: 1.1em; /* Slightly larger text */
+    flex: 1;
+    min-width: 200px; /* Ensures inputs don’t shrink too much */
+    transition: all 0.3s ease;
+}
+
+.add-task-section input:hover,
+.add-task-section select:hover {
+    background: #4a4a6b;
+}
+
+.add-task-section input:focus,
+.add-task-section select:focus {
+    background: #4a90e2;
+    color: #fff;
+}
+
+.add-task-section button {
+    padding: 15px 40px; /* Larger button */
+    background: linear-gradient(45deg, #4a90e2, #00ddeb);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.2em; /* Slightly larger text */
+    transition: all 0.3s ease;
+}
+
+.add-task-section button:hover {
+    background: linear-gradient(45deg, #357abd, #00b8c4);
+    box-shadow: 0 0 20px rgba(0, 221, 235, 0.5);
+}
+
+/* Light Mode Adjustments */
+body.light-mode .add-task-section {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .add-task-section h2 {
+    color: #333;
+    text-shadow: none;
+}
+
+body.light-mode .add-task-section input,
+body.light-mode .add-task-section select {
+    background: #e9ecef;
+    color: #333;
+}
+
+body.light-mode .add-task-section input:hover,
+body.light-mode .add-task-section select:hover {
+    background: #dee2e6;
+}
+
+body.light-mode .add-task-section input:focus,
+body.light-mode .add-task-section select:focus {
+    background: #80bfff;
+    color: #fff;
+}
+
+body.light-mode .add-task-section button {
+    background: linear-gradient(45deg, #007bff, #00c4cc);
+}
+
+body.light-mode .add-task-section button:hover {
+    background: linear-gradient(45deg, #0056b3, #009fa6);
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .add-task-section {
+        min-width: 100%; /* Full width on smaller screens */
+        padding: 30px;
+    }
+
+    .add-task-section form {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .add-task-section input,
+    .add-task-section select {
+        min-width: 100%; /* Full width for inputs on mobile */
+    }
+
+    .add-task-section button {
+        width: 100%; /* Full-width button on mobile */
+    }
+}
+/* Fun Mode for Dashboard */
+body.fun-mode .dashboard-container {
+    background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #ffd700);
+    border-radius: 25px;
+    padding: 30px;
+    animation: rainbow 10s infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+body.fun-mode .dashboard-container::before {
+    content: "🌟";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 3em;
+    animation: spin 3s infinite linear;
+}
+
+body.fun-mode .dashboard-header h1 {
+    color: #fff;
+    text-shadow: 0 0 15px #ff1493, 0 0 8px #ffd700;
+    font-family: 'Bangers', cursive;
+    font-size: 3em;
+    animation: bounce 2s infinite;
+}
+
+body.fun-mode .dashboard-header p {
+    color: #1a1a1a;
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 1.3em;
+    text-shadow: 0 0 5px #fff;
+}
+
+body.fun-mode .stats {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap; /* Responsive wrapping for small screens */
+}
+
+body.fun-mode .stat-card {
+    background: rgba(255, 215, 0, 0.9);
+    border: 3px dashed #ff1493;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    transition: transform 0.3s ease;
+    min-width: 100px; /* Prevent squashing */
+}
+
+body.fun-mode .stat-card:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+body.fun-mode .stat-card h3 {
+    color: #ff1493;
+    font-family: 'Bangers', cursive;
+    font-size: 2.5em;
+    text-shadow: 0 0 10px #fff;
+}
+
+body.fun-mode .stat-card p {
+    color: #1a1a1a;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+body.fun-mode .task-section {
+    background: linear-gradient(45deg, #4ecdc4, #ff6b6b);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 0 25px rgba(78, 205, 196, 0.7);
+    animation: pulse 4s infinite;
+}
+
+body.fun-mode .task-section h2 {
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 2.5em;
+    text-shadow: 0 0 15px #ffd700;
+    animation: wiggle 0.5s infinite;
+}
+
+body.fun-mode .task-filters {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 10px; /* Space between elements */
+    justify-content: space-between; /* Distribute space */
+    margin-bottom: 20px;
+}
+
+body.fun-mode .task-filters select,
+body.fun-mode .task-filters input#search-task {
+    background: rgba(255, 215, 0, 0.95);
+    color: #1a1a1a;
+    border: 3px solid #ff1493;
+    border-radius: 10px;
+    padding: 8px; /* Reduced padding for compactness */
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    width: 100%; /* Full width by default */
+    max-width: 200px; /* Cap width on larger screens */
+    box-sizing: border-box; /* Include padding/border in width */
+}
+
+body.fun-mode .task-filters select:hover,
+body.fun-mode .task-filters input#search-task:hover {
+    background: #ffca28;
+    transform: rotate(2deg);
+}
+
+body.fun-mode .task-list .task-item {
+    background: rgba(255, 182, 193, 0.9);
+    color: #1a1a1a;
+    border: 2px solid #4ecdc4;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 10px 0;
+    font-family: 'Comic Sans MS', cursive;
+    text-shadow: 0 0 5px #fff;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+body.fun-mode .task-list .task-item:hover {
+    background: #ffb6c1;
+    transform: translateX(10px) rotate(3deg);
+    box-shadow: 0 0 20px rgba(255, 182, 193, 0.9);
+}
+
+body.fun-mode .task-item .complete-btn,
+body.fun-mode .task-item .delete-btn {
+    background: linear-gradient(45deg, #ffd700, #ff6b6b);
+    color: #fff;
+    border: 2px dashed #fff;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-family: 'Bangers', cursive;
+    transition: all 0.3s ease;
+}
+
+body.fun-mode .task-item .complete-btn:hover,
+body.fun-mode .task-item .delete-btn:hover {
+    background: linear-gradient(45deg, #ffca28, #ff4500);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.8);
+}
+
+body.fun-mode .add-task-section {
+    background: linear-gradient(120deg, #ff1493, #4ecdc4);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 0 25px rgba(255, 20, 147, 0.7);
+    animation: pulse 3s infinite;
+}
+
+body.fun-mode .add-task-section h2 {
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 2.5em;
+    text-shadow: 0 0 15px #ffd700;
+    animation: bounce 1.5s infinite;
+}
+
+body.fun-mode .add-task-section input,
+body.fun-mode .add-task-section select {
+    background: rgba(255, 215, 0, 0.95);
+    color: #1a1a1a;
+    border: 3px solid #ff6b6b;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Comic Sans MS', cursive;
+    transition: all 0.3s ease;
+    width: 100%; /* Full width for responsiveness */
+    box-sizing: border-box;
+}
+
+body.fun-mode .add-task-section input:hover,
+body.fun-mode .add-task-section select:hover {
+    background: #ffca28;
+    transform: rotate(2deg);
+}
+
+body.fun-mode .add-task-section button {
+    background: linear-gradient(45deg, #ffd700, #ff6b6b, #4ecdc4);
+    color: #fff;
+    border: 2px dashed #fff;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-family: 'Bangers', cursive;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    animation: wiggle 0.5s infinite;
+    transition: all 0.3s ease;
+    width: 100%; /* Full width on small screens */
+}
+
+body.fun-mode .add-task-section button:hover {
+    background: linear-gradient(45deg, #ffca28, #ff4500, #00ced1);
+    transform: scale(1.1) rotate(3deg);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.9);
+}
+
+body.fun-mode .premium-section,
+body.fun-mode .upgrade-section {
+    background: linear-gradient(135deg, #4ecdc4, #ff1493, #ffd700);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 0 25px rgba(255, 20, 147, 0.7);
+    animation: rainbow 8s infinite;
+}
+
+body.fun-mode .premium-section h2,
+body.fun-mode .upgrade-section h2 {
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 2.5em;
+    text-shadow: 0 0 15px #ffd700;
+    animation: bounce 2s infinite;
+}
+
+body.fun-mode .premium-section .toggle-btn,
+body.fun-mode .upgrade-section .upgrade-btn {
+    background: #ff6b6b;
+    color: #fff;
+    border: 2px solid #ffd700;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'Bangers', cursive;
+    transition: all 0.3s ease;
+    width: 100%; /* Full width on small screens */
+    box-sizing: border-box;
+}
+
+body.fun-mode .premium-section .toggle-btn:hover,
+body.fun-mode .upgrade-section .upgrade-btn:hover {
+    background: #ff4500;
+    transform: scale(1.1) rotate(-3deg);
+    box-shadow: 0 0 15px rgba(255, 69, 0, 0.9);
+}
+
+body.fun-mode .premium-list li {
+    color: #1a1a1a;
+    font-family: 'Comic Sans MS', cursive;
+    text-shadow: 0 0 5px #fff;
+    animation: fadeIn 1s ease-in;
+}
+
+body.fun-mode .payment-btn {
+    background: linear-gradient(45deg, #ffd700, #ff1493);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'Bangers', cursive;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: block; /* Ensure block-level for full width */
+    width: 100%;
+    text-align: center;
+}
+
+body.fun-mode .payment-btn:hover {
+    background: linear-gradient(45deg, #ffca28, #ff4500);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 20, 147, 0.9);
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    body.fun-mode .task-filters select,
+    body.fun-mode .task-filters input#search-task {
+        width: auto; /* Restore natural width on larger screens */
+        max-width: 200px;
+    }
+    body.fun-mode .add-task-section input,
+    body.fun-mode .add-task-section select,
+    body.fun-mode .add-task-section button {
+        width: auto; /* Natural width on larger screens */
+    }
+    body.fun-mode .premium-section .toggle-btn,
+    body.fun-mode .upgrade-section .upgrade-btn,
+    body.fun-mode .payment-btn {
+        width: auto; /* Natural width on larger screens */
+    }
+}
+
+@media (max-width: 767px) {
+    body.fun-mode .dashboard-container {
+        padding: 15px; /* Reduce padding on small screens */
+    }
+    body.fun-mode .task-section,
+    body.fun-mode .add-task-section,
+    body.fun-mode .premium-section,
+    body.fun-mode .upgrade-section {
+        padding: 15px; /* Reduce padding */
+    }
+    body.fun-mode .task-filters {
+        flex-direction: column; /* Stack vertically on small screens */
+        align-items: stretch;
+    }
+    body.fun-mode .task-filters select,
+    body.fun-mode .task-filters input#search-task {
+        max-width: none; /* Full width on small screens */
+    }
+    body.fun-mode .stats {
+        gap: 10px; /* Smaller gap */
+    }
+    body.fun-mode .stat-card {
+        padding: 15px; /* Smaller padding */
+    }
+}
+
+/* Animations */
+@keyframes rainbow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    75% { transform: rotate(-3deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    z-index: 9999;
+}
+.notification.active {
+    display: block;
+    opacity: 1;
+}
+/* Footer Styles */
+.footer {
+    background: linear-gradient(135deg, #34495e, #2c3e50); /* Matches sidebar gradient */
+    color: #ecf0f1; /* Soft white */
+    padding: 40px 20px 20px; /* Top padding for spacing, bottom for copyright */
+    position: relative;
+    margin-top: 40px; /* Space above footer */
+    font-family: 'Arial', sans-serif; /* Clean font */
+}
+
+.footer-container {
+    max-width: 1200px; /* Centered content */
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap; /* Responsive wrapping */
+    justify-content: space-between;
+    gap: 20px; /* Space between sections */
+}
+
+.footer-brand,
+.footer-links,
+.footer-contact {
+    flex: 1;
+    min-width: 200px; /* Prevent collapse on small screens */
+}
+
+.footer-brand h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.footer-brand p {
+    font-size: 14px;
+    color: #bdc3c7; /* Light gray */
+    line-height: 1.5;
+}
+
+.footer-links h4,
+.footer-contact h4 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle underline */
+    padding-bottom: 5px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links ul li {
+    margin: 10px 0;
+}
+
+.footer-links ul li a,
+.footer-contact p a {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover,
+.footer-contact p a:hover,
+.footer-contact .social-link:hover {
+    color: #3498db; /* Blue hover effect */
+}
+
+.footer-contact p {
+    font-size: 14px;
+    color: #bdc3c7;
+    margin: 10px 0;
+}
+
+.footer-contact .social-link {
+    color: #bdc3c7;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle divider */
+    margin-top: 20px;
+}
+
+.footer-bottom p {
+    font-size: 12px;
+    color: #95a5a6; /* Slightly darker gray */
+    margin: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .footer {
+        padding: 30px 15px 15px;
+    }
+
+    .footer-container {
+        flex-direction: column; /* Stack sections vertically */
+        text-align: center;
+    }
+
+    .footer-brand,
+    .footer-links,
+    .footer-contact {
+        margin-bottom: 20px;
+    }
+
+    .footer-links ul li {
+        margin: 8px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-brand h3 {
+        font-size: 20px;
+    }
+
+    .footer-links h4,
+    .footer-contact h4 {
+        font-size: 16px;
+    }
+
+    .footer-links ul li a,
+    .footer-contact p,
+    .footer-contact .social-link {
+        font-size: 13px;
+    }
+
+    .footer-bottom p {
+        font-size: 11px;
+    }
+}
+
+/* Subtle Animation for Links */
+.footer-links ul li a,
+.footer-contact p a,
+.footer-contact .social-link {
+    position: relative;
+}
+
+.footer-links ul li a::after,
+.footer-contact p a::after,
+.footer-contact .social-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    background: #3498db;
+    bottom: -2px;
+    left: 0;
+    transition: width 0.3s ease;
+}
+
+.footer-links ul li a:hover::after,
+.footer-contact p a:hover::after,
+.footer-contact .social-link:hover::after {
+    width: 100%;
+}

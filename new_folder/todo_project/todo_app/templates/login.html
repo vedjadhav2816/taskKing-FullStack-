@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login to TaskKing{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'login.css' %}"> <!-- Kept as is, optional -->
+{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero login-hero">
+        <style>
+            /* Login Hero Section - Adjusted for header visibility */
+            .login-hero.hero {
+                height: auto; /* Dynamic height to fit content */
+                min-height: 100vh; /* Full viewport coverage */
+                position: relative;
+                background: linear-gradient(135deg, rgba(0, 221, 235, 0.2), rgba(255, 107, 107, 0.2));
+                overflow-y: auto; /* Allow scrolling if needed */
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 10px; /* Minimal padding */
+                box-sizing: border-box;
+            }
+
+            /* Hero Text - Focused on header */
+            .hero-text {
+                text-align: center;
+                position: relative;
+                z-index: 2;
+                padding: 5px;
+                margin: 10px 0; /* Space above and below */
+            }
+
+            .hero-text h1 {
+                font-size: 1.5rem; /* Base size for larger screens */
+                color: #ffffff;
+                text-shadow: 0 0 10px rgba(0, 221, 235, 0.5);
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                margin: 0 0 5px 0; /* Tight spacing */
+                line-height: 1.2; /* Prevent overflow */
+                word-wrap: break-word; /* Wrap long text */
+            }
+
+            /* Responsive Adjustments for Header */
+            @media (max-width: 480px) {
+                .login-hero.hero {
+                    height: auto;
+                    min-height: 100vh;
+                    padding: 5px;
+                    justify-content: flex-start; /* Start from top */
+                }
+                .hero-text {
+                    padding: 5px;
+                    margin: 5px 0; /* Reduced for small screens */
+                }
+                .hero-text h1 {
+                    font-size: 1rem; /* Smaller size for small screens */
+                }
+            }
+
+            @media (max-height: 600px) {
+                .login-hero.hero {
+                    padding: 5px;
+                }
+                .hero-text {
+                    margin: 5px 0;
+                }
+                .hero-text h1 {
+                    font-size: 1rem; /* Ensure it fits on short screens */
+                }
+            }
+        </style>
+
+        <div class="floating-book"></div>
+        <div class="floating-book"></div>
+        <div class="floating-book"></div>
+        <div class="hero-text">
+            <h1>Login to TaskKing</h1>
+            <p>Focus & Achieve Your Goals</p>
+        </div>
+        <div class="login-form">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login to Productivity</button>
+            </form>
+            <p>Not a member yet? <a href="{% url 'signup' %}">Sign up</a></p>
+        </div>
+    </section>
+{% endblock %}

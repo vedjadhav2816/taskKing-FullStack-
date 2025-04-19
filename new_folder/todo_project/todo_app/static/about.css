@@ -1,0 +1,146 @@
+/* About Hero Section */
+.about-hero {
+    height: 80vh; /* Slightly shorter than main hero */
+}
+
+/* Mission Section */
+.mission {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.mission h2 {
+    animation: fadeInUp 0.8s ease-out;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.mission-content {
+    margin-top: 1.5rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: slideIn 1s ease-out;
+}
+
+.mission-content p {
+    font-size: 1.2rem;
+    color: #ffffff;
+}
+
+/* Team Section */
+.team {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.team h2 {
+    animation: fadeInUp 0.8s ease-out;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.team-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 15px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    animation: bounceIn 1s ease-out;
+}
+
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 221, 235, 0.2) 0%, transparent 70%);
+    animation: rotateGlow 6s linear infinite;
+}
+
+.team-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 221, 235, 0.3);
+}
+
+.team-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.role {
+    color: #00ddeb;
+    font-size: 1rem;
+}
+
+/* Animation Keyframes (Duplicated from style.css for independence) */
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    60% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+@keyframes rotateGlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .about-hero { height: 70vh; }
+    .mission-content p { font-size: 1.1rem; }
+    .team-card h3 { font-size: 1.3rem; }
+    .role { font-size: 0.9rem; }
+}
+
+@media (max-width: 768px) {
+    .about-hero { height: 60vh; }
+    .mission { padding: 2rem 0; }
+    .mission h2 { font-size: 1.8rem; }
+    .mission-content { padding: 1.5rem; }
+    .mission-content p { font-size: 1rem; }
+    .team { padding: 2rem 0; }
+    .team h2 { font-size: 1.8rem; }
+    .team-grid { gap: 1rem; }
+    .team-card { padding: 1rem; }
+    .team-card h3 { font-size: 1.2rem; }
+    .role { font-size: 0.8rem; }
+}
+
+@media (max-width: 480px) {
+    .about-hero { height: 50vh; }
+    .mission { padding: 1.5rem 0; }
+    .mission h2 { font-size: 1.5rem; }
+    .mission-content { padding: 1rem; }
+    .mission-content p { font-size: 0.9rem; }
+    .team { padding: 1.5rem 0; }
+    .team h2 { font-size: 1.5rem; }
+    .team-grid { grid-template-columns: 1fr; }
+    .team-card { padding: 1rem; }
+    .team-card h3 { font-size: 1.1rem; }
+    .role { font-size: 0.7rem; }
+}
