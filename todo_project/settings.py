@@ -154,8 +154,19 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 if not GOOGLE_API_KEY:
     raise ValueError("⚠️ GOOGLE_API_KEY is missing! Add it to your .env file.")
+import os
+import dj_database_url
+from dotenv import load_dotenv
 
-CORS_ALLOWED_ORIGINS = [
-    "https://taskking.in",  # Your Vercel frontend URL
-]
-ALLOWED_HOSTS = ['taskKing.ai.onrender.com']
+load_dotenv()
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+}
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
