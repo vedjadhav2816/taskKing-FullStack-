@@ -24,8 +24,8 @@ SECRET_KEY = 'django-insecure-((r=(2^c#4*jlpb51!#flt+#3*%+hgk-0v2quv_cvalooy6dc9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = ['taskking-ai.onrender.com']
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-      "corsheaders",
+    "corsheaders",
     'todo_app',
 ]
 
